@@ -1,27 +1,84 @@
 <div class="table-wrapper">
     <mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="cid">
+            <mat-header-cell *matHeaderCellDef class="cell-mw-126"> ID number</mat-header-cell>
+            <mat-cell *matCellDef="let row; let i = index;" data-label="cid" (click)="edit(row, i, 1)" class="cell-mw-126"> 
+                      <div *ngIf="(!showInput(i, 1) && !editMode) || (i != editableIndex && editMode) || selectedColumn === 0 && editableIndex === -1">
+                        <mat-label>{{row.cid}}</mat-label>                       
+                      </div>
+                      <div *ngIf="showInput(i, 1)">
+                        <mat-form-field appearance="outline" class="input-edit">
+                            <input style="width: 140px;" matInput placeholder="CID"
+                                    [(ngModel)]="cid">
+                        </mat-form-field>
+                      </div>
+                  <div *ngIf="selectedColumn != 1 && editableIndex == i && editMode">
+                      <input matInput style="width: 140px;" [(ngModel)]="cid">
+                  </div>
+            </mat-cell>          
+        </ng-container>
+
         <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef class="cell-mw-140"> Name</mat-header-cell>
-            <mat-cell *matCellDef="let row" data-label="name" class="mat-cell-link cell-mw-140"> {{row.name}}
+            <mat-cell *matCellDef="let row; let i = index;" data-label="name" (click)="edit(row, i, 2)"  class="mat-cell-link cell-mw-140"> 
+                <div *ngIf="!showInput(i, 2)">
+                    <mat-label>{{row.name}}</mat-label> 
+                  </div>
+                  <div *ngIf="showInput(i, 2)">
+                    <mat-form-field appearance="outline" class="input-edit">
+                        <input matInput placeholder="Name"
+                                [(ngModel)]="name">
+                    </mat-form-field>
+                  </div>
             </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="surname">
             <mat-header-cell *matHeaderCellDef  class="cell-mw-126"> Surname</mat-header-cell>
-            <mat-cell *matCellDef="let row" data-label="surname"
-                      class="cell-mw-126"> {{row.surname}}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="cid">
-            <mat-header-cell *matHeaderCellDef class="cell-mw-126"> ID number</mat-header-cell>
-            <mat-cell *matCellDef="let row" data-label="cid"
-                      class="cell-mw-126"> {{row.cid}}</mat-cell>
+            <mat-cell *matCellDef="let row; let i = index;" data-label="surname" (click)="edit(row, i, 3)"  class="cell-mw-126">  
+                <div *ngIf="!showInput(i, 3)">
+                    <mat-label>{{row.surname}}</mat-label>                    
+                 </div>
+                <div *ngIf="showInput(i, 3)">
+                <mat-form-field appearance="outline" class="input-edit">
+                        <input style="width: 140px;" matInput placeholder="Surname"
+                                [(ngModel)]="surname">
+                    </mat-form-field>
+                </div>
+            </mat-cell>
         </ng-container>
 
         <ng-container  matColumnDef="address">
             <mat-header-cell *matHeaderCellDef class="cell-mw-400"> Address</mat-header-cell>
-            <mat-cell *matCellDef="let row" data-label="address"
-                      class="cell-mw-400"> {{row.address}}</mat-cell>
+            <mat-cell *matCellDef="let row; let i = index;"  data-label="address" (click)="edit(row, i, 4)"
+                      class="cell-mw-400"> 
+                <div *ngIf="!showInput(i, 4)">                  
+                    <mat-label>{{row.address}}</mat-label> 
+                </div>
+                <div *ngIf="showInput(i, 4)">
+                    <mat-form-field appearance="outline" class="input-edit">
+                        <input style="width: 140px;" matInput placeholder="Address"
+                            [(ngModel)]="address">
+                    </mat-form-field>
+                </div>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container  matColumnDef="sexo">
+            <mat-header-cell *matHeaderCellDef class="cell-mw-400"> Sexo</mat-header-cell>
+            <mat-cell *matCellDef="let row; let i = index;"  data-label="sexo" (click)="edit(row, i, 5)"
+                      class="cell-mw-400">           
+                <div *ngIf="!showInput(i, 5)">
+                    <mat-label>{{row.sexo}}</mat-label>                    
+                </div>
+                <div *ngIf="showInput(i, 5)">
+                    <mat-form-field appearance="outline" class="input-edit">
+                        <input style="width: 140px;" matInput placeholder="Sexo"
+                                [(ngModel)]="sexo">
+                        </mat-form-field>
+                    </div>
+            </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="sticky-header"></mat-header-row>
