@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
@@ -7,10 +7,12 @@ import {MatTableDataSource} from '@angular/material/table';
   styleUrls: ['./table-edit.component.scss']
 })
 export class TableEditComponent implements OnInit {
+  @Input() data: Array<any> = [];
+  @Input() configuration: Array<{ prop: string ,name: string}> = [];
+
   displayedColumns: string[] = [];
   columns: string[] = [];
   public dataSource: any;
-
   editMode = false;
   editableIndex:number = -1;
   clickedRow = -1;
@@ -25,78 +27,10 @@ export class TableEditComponent implements OnInit {
   constructor() { }
 
 
-  users = [
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:12,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:34,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:454,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:232,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:9564510,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:45,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:945410,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:945410,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'},
-    {cid:910,name:'Jose A',surname:'Bisbal',address:'Santa Clata',sexo:'M'}
-  ]
-
-  getDataConf() {
-    return [
-        {
-            prop: 'cid',
-            name: 'ID number'
-        },
-        {
-            prop: 'name',
-            name: 'Name'
-        },
-        {
-            prop: 'surname',
-            name: 'Surname'
-        },
-        {
-            prop: 'address',
-            name: 'Address'
-        },
-        {
-            prop: 'sexo',
-            name: 'Sexo'
-        }
-    ];  
-  }
-
   ngOnInit(): void {
-    this.displayedColumns = this.getDataConf().map((c) => c.prop);
+    this.displayedColumns = this.configuration.map((c) => c.prop);
     this.columns = this.displayedColumns;
-    this.dataSource = new MatTableDataSource<any>(this.users);
+    this.dataSource = new MatTableDataSource<any>(this.data);
   }
 
   showInput(index: number, column: number) {
@@ -122,6 +56,48 @@ export class TableEditComponent implements OnInit {
     this.editableIndex = index;
     this.selectedColumn = column;
     this.rowToUpdate = row;
+  }
+
+  @HostListener("window:keydown", ["$event"])
+  keyEvent(event: KeyboardEvent) {
+    switch (event.code) {
+      case "Home": { return this.KeyboardEventHome(); }
+      case "End": { return this.KeyboardEventEnd(); }
+      case "ArrowLeft": { return this.KeyboardEventArrowLeft();}
+      case "ArrowRight": { return this.KeyboardEventArrowRight();}
+      case "ArrowUp": { return this.KeyboardEventArrowUp();}
+      case "ArrowDown": { return this.KeyboardEventArrowDown();}
+      case "Escape": { return this.KeyboardEventEscape();}
+      default: { return; }
+    }
+  }
+
+  KeyboardEventHome() {
+    this.edit(this.rowToUpdate, this.editableIndex, 1);
+  }
+
+  KeyboardEventEnd() {
+    this.edit(this.rowToUpdate, this.editableIndex, 5);
+  }
+
+  KeyboardEventArrowLeft() {
+    this.edit(this.rowToUpdate, this.editableIndex, --this.selectedColumn);
+  }
+
+  KeyboardEventArrowRight() {
+    this.edit(this.rowToUpdate, this.editableIndex, ++this.selectedColumn);
+  }
+
+  KeyboardEventArrowUp() {
+    this.edit(this.rowToUpdate, --this.editableIndex, this.selectedColumn); 
+  }
+
+  KeyboardEventArrowDown() {
+    this.edit(this.rowToUpdate, ++this.editableIndex, this.selectedColumn); 
+  }
+
+  KeyboardEventEscape() {
+    this.disableEditMode();
   }
 
 }

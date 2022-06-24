@@ -1,6 +1,6 @@
 <div class="table-wrapper">
     <mat-table [dataSource]="dataSource">
-
+        
         <ng-container matColumnDef="cid">
             <mat-header-cell *matHeaderCellDef class="cell-mw-126"> ID number</mat-header-cell>
             <mat-cell *matCellDef="let row; let i = index;" data-label="cid" (click)="edit(row, i, 1)" class="cell-mw-126"> 
