@@ -1,0 +1,33 @@
+<div class="table-wrapper">
+    <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef class="cell-mw-140"> Name</mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="name" class="mat-cell-link cell-mw-140"> {{row.name}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="surname">
+            <mat-header-cell *matHeaderCellDef  class="cell-mw-126"> Surname</mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="surname"
+                      class="cell-mw-126"> {{row.surname}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cid">
+            <mat-header-cell *matHeaderCellDef class="cell-mw-126"> ID number</mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="cid"
+                      class="cell-mw-126"> {{row.cid}}</mat-cell>
+        </ng-container>
+
+        <ng-container  matColumnDef="address">
+            <mat-header-cell *matHeaderCellDef class="cell-mw-400"> Address</mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="address"
+                      class="cell-mw-400"> {{row.address}}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="sticky-header"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;">
+        </mat-row>
+    </mat-table>
+</div>
+
+ 
